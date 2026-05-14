@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Ahmad's Hub"/>
+<title>Ahmad's Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #080b12;
+  --bg2: #0e1320;
+  --bg3: #141c2e;
+  --bg4: #1c2840;
+  --bg5: #243352;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold3: #f5e4b0;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.2);
+  --text: #eef2f8;
+  --text2: #7a8aaa;
+  --text3: #2e3a52;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* BACKGROUND */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(201,168,76,0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 100%, rgba(91,156,246,0.06) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(155,127,232,0.03) 0%, transparent 60%);
+}
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* EVERYTHING ABOVE BG */
+header, .greeting-wrap, .cards-wrap, footer { position: relative; z-index: 1; }
+
+/* HEADER */
+header {
+  padding: 52px 24px 0;
+  text-align: center;
+}
+.header-label {
+  font-size: 10px; letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gold); font-weight: 500; margin-bottom: 14px;
+  animation: fadeUp 0.6s ease both;
+}
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 10vw, 80px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.header-title .line1 { display: block; color: var(--text); }
+.header-title .line2 { display: block; color: var(--gold); font-style: italic; }
+
+.header-divider {
+  width: 160px; height: 1px; margin: 20px auto 0;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+/* TIME & DATE */
+.greeting-wrap {
+  text-align: center;
+  padding: 20px 24px 0;
+  animation: fadeUp 0.6s 0.25s ease both;
+}
+#time-display {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+#date-display {
+  font-size: 12px; color: var(--text2);
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* CARDS GRID */
+.cards-wrap {
+  padding: 32px 20px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 12px; padding-left: 4px;
+  font-weight: 500;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.cards-grid.single { grid-template-columns: 1fr; }
+.cards-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+/* CARD */
+.hub-card {
+  background: var(--bg2);
+  border: 1px solid var(--bg4);
+  border-radius: 16px;
+  padding: 20px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+}
+.hub-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.hub-card:hover::before { opacity: 1; }
+.hub-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--bg5);
+  background: var(--bg3);
+}
+.hub-card:active { transform: scale(0.97); }
+
+/* card accent colours */
+.hub-card.c-gold::before   { background: linear-gradient(to right, transparent, var(--gold), transparent); }
+.hub-card.c-blue::before   { background: linear-gradient(to right, transparent, #5b9cf6, transparent); }
+.hub-card.c-green::before  { background: linear-gradient(to right, transparent, #2ecc8a, transparent); }
+.hub-card.c-orange::before { background: linear-gradient(to right, transparent, #ff6b2b, transparent); }
+.hub-card.c-sky::before    { background: linear-gradient(to right, transparent, #3a9bd5, transparent); }
+.hub-card.c-purple::before { background: linear-gradient(to right, transparent, #a78bfa, transparent); }
+
+.hub-card.c-gold:hover   { border-color: rgba(201,168,76,.3); }
+.hub-card.c-blue:hover   { border-color: rgba(91,156,246,.3); }
+.hub-card.c-green:hover  { border-color: rgba(46,204,138,.3); }
+.hub-card.c-orange:hover { border-color: rgba(255,107,43,.3); }
+.hub-card.c-sky:hover    { border-color: rgba(58,155,213,.3); }
+.hub-card.c-purple:hover { border-color: rgba(167,139,250,.3); }
+
+.card-icon {
+  font-size: 32px; display: block; margin-bottom: 12px;
+  line-height: 1;
+}
+.card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; color: var(--text);
+  line-height: 1.1; margin-bottom: 4px;
+}
+.card-desc {
+  font-size: 11px; color: var(--text2);
+  letter-spacing: 0.5px; line-height: 1.5;
+}
+.card-arrow {
+  position: absolute; bottom: 16px; right: 16px;
+  font-size: 16px; color: var(--text3);
+  transition: color 0.2s, transform 0.2s;
+}
+.hub-card:hover .card-arrow { transform: translate(2px, -2px); }
+.hub-card.c-gold:hover .card-arrow   { color: var(--gold); }
+.hub-card.c-blue:hover .card-arrow   { color: #5b9cf6; }
+.hub-card.c-green:hover .card-arrow  { color: #2ecc8a; }
+.hub-card.c-orange:hover .card-arrow { color: #ff6b2b; }
+.hub-card.c-sky:hover .card-arrow    { color: #3a9bd5; }
+.hub-card.c-purple:hover .card-arrow { color: #a78bfa; }
+
+/* WIDE CARD */
+.hub-card.wide {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 20px;
+}
+.hub-card.wide .card-icon { font-size: 28px; margin-bottom: 0; flex-shrink: 0; }
+.hub-card.wide .card-text { flex: 1; }
+.hub-card.wide .card-name { font-size: 17px; }
+
+/* SHIMMER EFFECT on cards */
+.hub-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.hub-card:hover::after { transform: translateX(100%); }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 0 24px 40px;
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 1px;
+}
+footer span { color: var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* stagger cards */
+.hub-card:nth-child(1) { animation-delay: 0.3s; }
+.hub-card:nth-child(2) { animation-delay: 0.35s; }
+.hub-card:nth-child(3) { animation-delay: 0.4s; }
+.hub-card:nth-child(4) { animation-delay: 0.45s; }
+.hub-card:nth-child(5) { animation-delay: 0.5s; }
+.hub-card:nth-child(6) { animation-delay: 0.55s; }
+
+/* EDIT MODAL */
+.edit-hint {
+  text-align: center; margin-bottom: 20px;
+  font-size: 11px; color: var(--text3); letter-spacing: 1px;
+}
+.edit-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  color: var(--gold2); font-size: 11px; font-weight: 500;
+  padding: 7px 16px; border-radius: 20px; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase;
+}
+.edit-btn:hover { background: rgba(201,168,76,0.2); }
+
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--bg4);
+  border-radius: 18px; padding: 28px 24px;
+  width: 100%; max-width: 420px;
+  animation: fadeUp 0.25s ease both;
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: var(--gold2);
+  margin-bottom: 20px;
+}
+.url-row {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;
+}
+.url-label {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+}
+.url-label span { font-size: 16px; }
+.url-input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--bg4);
+  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; padding: 9px 12px; outline: none;
+  transition: border-color 0.2s;
+}
+.url-input:focus { border-color: rgba(201,168,76,0.3); }
+.modal-note {
+  font-size: 12px; color: var(--text2); margin: 16px 0;
+  line-height: 1.7; padding: 12px; background: var(--bg3);
+  border-radius: 8px; border-left: 2px solid var(--gold);
+}
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.btn-save {
+  flex: 1; background: var(--gold-dim); border: 1px solid var(--gold);
+  color: var(--gold2); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; padding: 11px;
+  border-radius: 8px; cursor: pointer; transition: all 0.2s;
+}
+.btn-save:hover { background: rgba(201,168,76,0.22); }
+.btn-cancel {
+  background: var(--bg3); border: 1px solid var(--bg4);
+  color: var(--text2); font-size: 13px; padding: 11px 18px;
+  border-radius: 8px; cursor: pointer; transition: all 0.2s;
+}
+.btn-cancel:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grid-overlay"></div>
+
+<header>
+  <p class="header-label">Personal Dashboard</p>
+  <h1 class="header-title">
+    <span class="line1">Ahmad's</span>
+    <span class="line2">Hub</span>
+  </h1>
+  <div class="header-divider"></div>
+</header>
+
+<div class="greeting-wrap">
+  <div id="time-display">00:00</div>
+  <div id="date-display">Loading...</div>
+</div>
+
+<div class="cards-wrap">
+
+  <p class="section-label">Finance</p>
+  <div class="cards-grid single">
+    <a class="hub-card wide c-green" id="card-budget" href="#" target="_blank">
+      <span class="card-icon">💰</span>
+      <div class="card-text">
+        <div class="card-name">Smart Budget</div>
+        <div class="card-desc">Income · Expenses · Goals · Recurring</div>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+  </div>
+
+  <p class="section-label">Entertainment</p>
+  <div class="cards-grid single">
+    <a class="hub-card wide c-gold" id="card-vault" href="#" target="_blank">
+      <span class="card-icon">🎬</span>
+      <div class="card-text">
+        <div class="card-name">Ahmad's Vault</div>
+        <div class="card-desc">Movies · Series · Anime · Games</div>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+  </div>
+
+  <p class="section-label">Life & Places</p>
+  <div class="cards-grid">
+    <a class="hub-card c-orange" id="card-food" href="#" target="_blank">
+      <span class="card-icon">🍽️</span>
+      <div class="card-name">Food & Places</div>
+      <div class="card-desc">Restaurants · Cafes · Desserts</div>
+      <span class="card-arrow">↗</span>
+    </a>
+    <a class="hub-card c-sky" id="card-travel" href="#" target="_blank">
+      <span class="card-icon">🌍</span>
+      <div class="card-name">Travel Vault</div>
+      <div class="card-desc">Countries · Cities · Landmarks</div>
+      <span class="card-arrow">↗</span>
+    </a>
+  </div>
+
+</div>
+
+<div class="edit-hint">
+  <button class="edit-btn" onclick="openModal()">⚙ Update Links</button>
+</div>
+
+<footer>
+  Built for <span>Ahmad</span> · Your personal command centre
+</footer>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <p class="modal-title">Update Your Links</p>
+    <div class="url-row"><label class="url-label"><span>💰</span> Smart Budget URL</label><input class="url-input" id="url-budget" placeholder="https://yourusername.github.io/budget"/></div>
+    <div class="url-row"><label class="url-label"><span>🎬</span> Vault URL</label><input class="url-input" id="url-vault" placeholder="https://yourusername.github.io/tracker"/></div>
+    <div class="url-row"><label class="url-label"><span>🍽️</span> Food & Places URL</label><input class="url-input" id="url-food" placeholder="https://yourusername.github.io/food"/></div>
+    <div class="url-row"><label class="url-label"><span>🌍</span> Travel Vault URL</label><input class="url-input" id="url-travel" placeholder="https://yourusername.github.io/travel"/></div>
+    <div class="modal-note">
+      Replace <strong>yourusername</strong> with your actual GitHub username and the repo name with whatever you named each repo. Your links are saved locally on your device.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveLinks()">Save Links</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// TIME & DATE
+function updateClock() {
+  var now = new Date();
+  var h = now.getHours();
+  var m = String(now.getMinutes()).padStart(2,'0');
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12 || 12;
+  document.getElementById('time-display').textContent = h12 + ':' + m + ' ' + ampm;
+  var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('date-display').textContent = days[now.getDay()] + ' · ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// LINKS
+var LINK_KEYS = { budget:'url-budget', vault:'url-vault', food:'url-food', travel:'url-travel' };
+var CARD_IDS  = { budget:'card-budget', vault:'card-vault', food:'card-food', travel:'card-travel' };
+
+function loadLinks() {
+  try {
+    var saved = localStorage.getItem('ahmads-hub-links');
+    if (saved) {
+      var links = JSON.parse(saved);
+      for (var k in links) {
+        if (links[k]) {
+          var card = document.getElementById(CARD_IDS[k]);
+          if (card) card.href = links[k];
+        }
+      }
+    }
+  } catch(e){}
+}
+
+function openModal() {
+  try {
+    var saved = localStorage.getItem('ahmads-hub-links');
+    if (saved) {
+      var links = JSON.parse(saved);
+      for (var k in LINK_KEYS) {
+        var inp = document.getElementById(LINK_KEYS[k]);
+        if (inp && links[k]) inp.value = links[k];
+      }
+    }
+  } catch(e){}
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+document.getElementById('modal-overlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+function saveLinks() {
+  var links = {};
+  for (var k in LINK_KEYS) {
+    var val = document.getElementById(LINK_KEYS[k]).value.trim();
+    links[k] = val;
+    if (val) {
+      var card = document.getElementById(CARD_IDS[k]);
+      if (card) card.href = val;
+    }
+  }
+  try { localStorage.setItem('ahmads-hub-links', JSON.stringify(links)); } catch(e){}
+  closeModal();
+  showToast('Links saved ✓');
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;font-size:13px;font-weight:500;padding:10px 22px;border-radius:30px;z-index:999;letter-spacing:1px;white-space:nowrap;';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(function(){ t.remove(); },300); },1800);
+}
+
+loadLinks();
+</script>
+</body>
+</html>
